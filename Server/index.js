@@ -6,6 +6,7 @@ import cors from 'cors';
 import bcrypt from 'bcrypt';
 import {Voter} from './voterschema.js';
 import { Admin } from './AdminModel.js';
+import { Poll } from './pollSchema.js';
 
 const app=express();
 app.use(cors());
@@ -32,6 +33,84 @@ app.get("/voter",async(request,response)=>{
       response.status(StatusCodes.INTERNAL_SERVER_ERROR).send({message:ERROR_MESSAGE}); 
   }
 });
+
+app.get('/polls', async (request, response) => {
+  try {
+    const polls = await Poll.find();
+    response.send({ polls: polls });
+  } catch (error) {
+    response.status(StatusCodes.INTERNAL_SERVER_ERROR).send({ message: 'Error fetching polls' });
+  }
+});
+
+// Create a new poll
+app.post('/polls', async (request, response) => {
+  try {
+    const { question, options } = request.body;
+    const newPoll = new Poll({
+      question,
+      options,
+    });
+    await newPoll.save();
+    response.send({ message: 'Poll created successfully' });
+  } catch (error) {
+    response.status(StatusCodes.INTERNAL_SERVER_ERROR).send({ message: 'Error creating poll' });
+  }
+});
+
+// ... (other imports and setup)
+
+// API endpoint to submit a vote
+app.post('/polls/vote', async (request, response) => {
+  const { phone, question, optionIndex } = request.body;
+
+  try {
+    // Find the voter by phone number
+    const voter = await Voter.findOne({ phone });
+
+    if (!voter) {
+      response.status(StatusCodes.NOT_FOUND).send({ message: 'Voter not found' });
+      return;
+    }
+
+    // Find the poll by question (assuming questions are unique)
+    const poll = await Poll.findOne({ question });
+
+    if (!poll) {
+      response.status(StatusCodes.NOT_FOUND).send({ message: 'Poll not found' });
+      return;
+    }
+
+    // Check if the voter has already voted in this poll
+    const existingVote = poll.votes.find(vote => vote.voterId.equals(voter._id));
+
+    if (existingVote) {
+      response.status(StatusCodes.BAD_REQUEST).send({ message: 'Voter has already voted in this poll' });
+      return;
+    }
+
+    if (optionIndex < 0 || optionIndex >= poll.options.length) {
+      response.status(StatusCodes.BAD_REQUEST).send({ message: 'Invalid option index' });
+      return;
+    }
+
+    // Add the new vote to the poll
+    poll.votes.push({ voterId: voter._id, optionIndex });
+
+    // Increase the vote count for the selected option
+    poll.options[optionIndex].votes += 1;
+
+    await poll.save();
+
+    response.send({ message: 'Vote submitted successfully' });
+  } catch (error) {
+    response.status(StatusCodes.INTERNAL_SERVER_ERROR).send({ message: 'Error submitting vote' });
+  }
+});
+
+
+// ... (other existing code)
+
 
 app.post("/admin",async(request,response)=>{
   try{
