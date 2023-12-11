@@ -7,8 +7,10 @@ import { Voterlist } from './components/voterlist';
 import { RegistrationPage } from './components/Registration';
 import LoginForm, { Login } from './components/LoginForm';
 import { VoterEditForm } from './components/voterEditForm';
-import Poll from './components/Poll.jsx';
-import {PollLogic} from './components/PollLogic.jsx';
+
+import {Dashboard} from './components/DashBoard.jsx';
+import {Poll} from './components/Poll.jsx';
+
 
 
 function App() {
@@ -21,9 +23,11 @@ function App() {
         <Route path='/Voterlist' element={<Voterlist/>}></Route>
         <Route path='/register' element={<RegistrationPage/>}></Route>
         <Route path='/login' element={<LoginForm/>}></Route>
-        <Route path='/edit/:phone' element={<VoterEditForm/>}></Route>
         <Route path='/Poll' element={<Poll/>}></Route>
-        <Route path='/PollLogic' element={<PollLogic/>}></Route>
+        <Route path='/edit/:phone' element={<VoterEditForm/>}></Route>
+    
+        <Route path='/dashboard' element={<Dashboard/>}></Route>
+        
         </Routes>
     </BrowserRouter>
   );

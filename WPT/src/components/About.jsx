@@ -17,21 +17,18 @@ export const About = () => {
       <Row>
         <Accordion defaultActiveKey="0">
           <Accordion.Item eventKey="0">
-            <Accordion.Header>Project Journey</Accordion.Header>
+            <Accordion.Header><b>Project Journey</b></Accordion.Header>
             <Accordion.Body>
-              Working started on 25th Nov 2023  , At first we were little Confused so stared with rough design of application and started working from basics after we got the overall image we divided our work and every team member have contributed same in working <div className=""></div>
+            As we embarked on the journey of building a Polling app, We began with a clear vision of creating an engaging platform for users to voice their opinions. We defined the app's objectives, outlined key features, and chose the MERN stack for its flexibility and efficiency.<div className=""></div>
             </Accordion.Body>
           </Accordion.Item>
           <Accordion.Item eventKey="1">
-            <Accordion.Header>Learing From Project work</Accordion.Header>
+            <Accordion.Header><b>Learing From Project work</b></Accordion.Header>
             <Accordion.Body>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-              minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-              aliquip ex ea commodo consequat. Duis aute irure dolor in
-              reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-              pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-              culpa qui officia deserunt mollit anim id est laborum.
+            Interacting with MongoDB to store and retrieve voting data.
+Understanding schema design for storing poll questions, options, and votes.
+Creating a dynamic and responsive user interface with React.
+Managing state efficiently to reflect changes in the UI based on user interactions.
             </Accordion.Body>
           </Accordion.Item>
         </Accordion>
@@ -43,13 +40,13 @@ export const About = () => {
             <Card.Img variant="top" src={Bhagyesh} alt="Card image" />
 
             <Card.Body>
-              <Card.Title>Card Title</Card.Title>
-              <Card.Text>
+              <Card.Title>Bhagyesh Deore</Card.Title>
+              <Card.Text style={{ color: 'black' }}>
                 Worked on Express js , MongoDB , React-Bootstrap
               </Card.Text>
             </Card.Body>
             <ListGroup className="list-group-flush">
-              <ListGroup.Item>Bhagyesh Deore</ListGroup.Item>
+              <ListGroup.Item>PRN-230940320030</ListGroup.Item>
               <ListGroup.Item>PG-DAC Kharghar</ListGroup.Item>
               <ListGroup.Item>BE in Mechanical Engineering</ListGroup.Item>
             </ListGroup>
@@ -65,13 +62,13 @@ export const About = () => {
             <Card.Img variant="top" src={Shaival} alt="Card image" />
 
             <Card.Body>
-              <Card.Title>Card Title</Card.Title>
-              <Card.Text>
-                Worked on Express js , MongoDB , React-Bootstrap
+              <Card.Title>Shaival Paradkar</Card.Title>
+              <Card.Text style={{ color: 'black' }}>
+                Worked on  Node js ,Express js , MongoDB , React-Bootstrap 
               </Card.Text>
             </Card.Body>
             <ListGroup className="list-group-flush">
-              <ListGroup.Item>Shaival Paradkar </ListGroup.Item>
+              <ListGroup.Item>PRN - 230940320101 </ListGroup.Item>
               <ListGroup.Item>PG-DAC Kharghar</ListGroup.Item>
               <ListGroup.Item>BE in Computer Engineering</ListGroup.Item>
             </ListGroup>
@@ -86,13 +83,13 @@ export const About = () => {
           <Card style={{ width: '18rem' }}>
             <Card.Img variant="top" src={Lalit} alt="Card image" />
             <Card.Body>
-              <Card.Title>Card Title</Card.Title>
-              <Card.Text>
+              <Card.Title>Lalit Nankar</Card.Title>
+              <Card.Text style={{ color: 'black' }}>
                 Worked on Express js , MongoDB , React-Bootstrap
               </Card.Text>
             </Card.Body>
             <ListGroup className="list-group-flush">
-              <ListGroup.Item>Lalit Nankar</ListGroup.Item>
+              <ListGroup.Item>PRN-230940320058</ListGroup.Item>
               <ListGroup.Item>PG-DAC Kharghar</ListGroup.Item>
               <ListGroup.Item>BE in Computer Engineering</ListGroup.Item>
             </ListGroup>
@@ -109,8 +106,8 @@ export const About = () => {
         <Col md={4}>
       
           <h5>Contact Us</h5>
-          <p>Email: info@example.com</p>
-          <p>Phone: (123) 456-7890</p>
+          <p>Email: bhagyeshdeore123@gmail.com</p>
+          <p>Phone: 9146480034</p>
         </Col>
         <Col md={4}>
           <h5>Follow Us</h5>
@@ -132,12 +129,12 @@ export const About = () => {
             </li>
           </ul>
         </Col>
-        <Col md={4}>
+        {/* <Col md={4}>
           <h5>Contact Us</h5>
-          <p>Email: info@example.com</p>
-          <p>Phone: (123) 456-7890</p>
+          <p>Email: bhagyeshdeore123@gmail.com</p>
+          <p>Phone: 9146480034</p>
           
-        </Col>
+        </Col> */}
       
       </Row>
       </footer>

@@ -1,15 +1,60 @@
-import { Alert, Container } from "react-bootstrap";
+import { Container, Row,Col,Card,Button} from "react-bootstrap"
+//import CarouselFadeExample from './Carousel';
+import CarouselFadeExample from "./CarouselFadeExample";
+//import './style.css';
+import pic1 from "./Image/cr2.jpg";
+import pic2 from "./Image/poll3.png";
+import pic3 from "./Image/poll4.png"
+
+import {Footer} from "./Footer";
+
+
 
 export function Home(){
-    return (
-        <Container className="mt-5">
-            <Alert variant="success">
-                <h1>Welcome to Home</h1>
-            </Alert>
-            <p style={{color: 'white'}}>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Deleniti quam, quisquam vitae, rem sint architecto nulla accusamus molestiae quidem numquam fugit saepe nisi excepturi minima in blanditiis animi ratione quos?
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Deleniti magni perferendis officia unde illo aspernatur reprehenderit modi provident ad aliquid necessitatibus corrupti ipsam excepturi dignissimos natus, voluptates, voluptate facere praesentium.
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Eius dolores exercitationem asperiores, praesentium deserunt molestias delectus reiciendis officia saepe aliquid veritatis consectetur culpa ipsum alias ducimus voluptatem minus facilis ad.
-            </p>
-        </Container>
-    );
+  return (
+    <Container>
+    
+      <CarouselFadeExample></CarouselFadeExample>
+     <Row>
+      <Col lg={4} classname="mt-12 mb-2">
+      <Card style={{ width: '24rem' }}>
+      <Card.Img variant="top" src={pic1}/>
+      <Card.Body>
+        <Card.Title>Importance of Opinion</Card.Title>
+        <Card.Text style={{ color: 'black' }}>
+        Polls are widely used to gauge public opinion on a variety of issues, including political candidates, policies, and social topics. They provide a snapshot of what people think at a given moment.
+        </Card.Text>
+      {/* <Button variant="primary">Go somewhere</Button> */}
+      </Card.Body>
+    </Card>
+    </Col>
+    <Col lg={4} className="mt-5 mb-2">
+      <Card style={{ width: '24 rem' }}>
+      <Card.Img variant="top" src={pic2} />
+      <Card.Body>
+        <Card.Title>Market Research:</Card.Title>
+        <Card.Text style={{ color: 'black' }}>
+        Businesses use polls to gather information about consumer preferences, market trends, and feedback on products or services. This data helps companies make informed decisions about product development, marketing strategies, and overall business direction.
+        </Card.Text>
+        {/* <Button variant="primary">Go somewhere</Button> */}
+      </Card.Body>
+    </Card>
+    </Col>
+    <Col lg={4} className="mt-5 mb-2">
+      <Card style={{ width: '24 rem' }}>
+      <Card.Img variant="top" src={pic3} />
+      <Card.Body>
+        <Card.Title>Decision-Making in Organizations:</Card.Title>
+        <Card.Text style={{ color: 'black' }}> 
+        Within organizations, polls can be used to make decisions on various matters, such as choosing a venue for an event, deciding on work policies, or selecting preferred team-building activities.
+        </Card.Text>
+        {/* <Button variant="primary">Go somewhere</Button> */}
+      </Card.Body>
+    </Card>
+    </Col>
+  </Row>
+    <Footer></Footer>
+
+    </Container>
+  );
 }

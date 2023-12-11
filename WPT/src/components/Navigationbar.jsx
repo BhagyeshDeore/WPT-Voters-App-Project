@@ -18,12 +18,12 @@ export function Navigationbar() {
                         <LinkContainer to="/Voterlist">
                             <Nav.Link>Voter list</Nav.Link>
                         </LinkContainer>
-                        <LinkContainer to="/Poll">
-                            <Nav.Link>POll</Nav.Link>
+                        <LinkContainer to="/dashboard">
+                            <Nav.Link>Dashboard</Nav.Link>
                         </LinkContainer>
-                        <LinkContainer to="/PollLogic">
+                        {/* <LinkContainer to="/PollLogic">
                             <Nav.Link>Login</Nav.Link>
-                        </LinkContainer>
+                        </LinkContainer> */}
                         {/* <LinkContainer to="/register">
                             <Nav.Link>Register</Nav.Link>
                         </LinkContainer> */}

@@ -1,12 +1,28 @@
-// Poll.jsx
+import React, { useState, useEffect } from 'react';
 
-import React, { useState } from 'react';
-import { Container, Row, Col, Form, Button } from 'react-bootstrap';
-
-const Poll = ({ onSubmit }) => {
+export function Poll({ updatePollData }) {
   const [question, setQuestion] = useState('');
-  const [options, setOptions] = useState(['', '', '']); // Start with three empty options
+  const [options, setOptions] = useState([]);
   const [selectedOption, setSelectedOption] = useState('');
+  const [results, setResults] = useState([]);
+
+  useEffect(() => {
+    // Simulate fetching poll question and options
+    const pollData = {
+      question: 'What is your favorite color?',
+      options: ['Red', 'Blue', 'Green'],
+    };
+    setQuestion(pollData.question);
+    setOptions(pollData.options);
+
+    // Simulate fetching poll results
+    const pollResults = [
+      { _id: '1', text: 'Red', votes: 0 },
+      { _id: '2', text: 'Blue', votes: 0 },
+      { _id: '3', text: 'Green', votes: 0 },
+    ];
+    setResults(pollResults);
+  }, []); // Run once on component mount
 
   const handleOptionChange = (event) => {
     setSelectedOption(event.target.value);
@@ -15,76 +31,56 @@ const Poll = ({ onSubmit }) => {
   const handleVoteSubmit = (event) => {
     event.preventDefault();
 
-    // Check if the user selected an option
-    if (!selectedOption) {
-      alert('Please select an option before submitting your vote.');
-      return;
-    }
+    // Simulate sending a vote
+    const newResults = results.map((result) => {
+      if (result.text === selectedOption) {
+        return { ...result, votes: result.votes + 1 };
+      }
+      return result;
+    });
+    setResults(newResults);
 
-    // Prepare the poll data to be submitted to the backend
-    const pollData = {
-      question,
-      options,
-      selectedOption,
-    };
-
-    // Call the onSubmit callback to send the poll data to the parent component
-    onSubmit(pollData);
+    // Call the updatePollData function passed from Dashboard
+    updatePollData(newResults);
   };
 
-  const handleOptionInputChange = (index, event) => {
-    const newOptions = [...options];
-    newOptions[index] = event.target.value;
-    setOptions(newOptions);
-  };
+  // Apply styles to make text color white
+  const textStyle = { color: 'white' };
 
   return (
-    <Container className="mt-5" style={{ backgroundColor: 'white', padding: '20px', borderRadius: '8px' }}>
-      <Row className="justify-content-center">
-        <Col md={8}>
-          <h2>Poll Question</h2>
-          <Form onSubmit={handleVoteSubmit}>
-            <Form.Group controlId="pollQuestion">
-              <Form.Label>Question:</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Enter your poll question"
-                value={question}
-                onChange={(event) => setQuestion(event.target.value)}
+    <div id="poll">
+      <h2 style={textStyle}>{question}</h2>
+      <form id="pollForm" onSubmit={handleVoteSubmit}>
+        {options.map((option) => (
+          <div key={option} style={textStyle}>
+            <label>
+              <input
+                type="radio"
+                name="option"
+                value={option}
+                checked={selectedOption === option}
+                onChange={handleOptionChange}
               />
-            </Form.Group>
-            {options.map((option, index) => (
-              <Form.Group controlId={`option${index + 1}`} key={index}>
-                <Form.Label>{`Option ${index + 1}:`}</Form.Label>
-                <Form.Control
-                  type="text"
-                  placeholder={`Enter option ${index + 1}`}
-                  value={option}
-                  onChange={(event) => handleOptionInputChange(index, event)}
-                />
-              </Form.Group>
-            ))}
-            <Form.Group controlId="selectedOption">
-              <Form.Label>Select an option:</Form.Label>
-              {options.map((option, index) => (
-                <Form.Check
-                  type="radio"
-                  key={index}
-                  label={option}
-                  value={option}
-                  checked={selectedOption === option}
-                  onChange={handleOptionChange}
-                />
-              ))}
-            </Form.Group>
-            <Button type="submit" variant="primary" className="mt-3">
-              Vote
-            </Button>
-          </Form>
-        </Col>
-      </Row>
-    </Container>
+              {option}
+            </label>
+          </div>
+        ))}
+        <button type="submit" style={{ color: 'black' }}>
+          Vote
+        </button>
+      </form>
+      <div id="results" style={textStyle}>
+        <h3>Results:</h3>
+        <ul>
+          {results.map((result) => (
+            <li key={result._id} style={textStyle}>
+              {result.text}: {result.votes}
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
   );
-};
+}
 
 export default Poll;
