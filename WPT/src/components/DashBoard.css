@@ -1,0 +1,21 @@
+.add-question-btn {
+    position: absolute;
+    bottom: 50px;
+    right: 50px;
+    padding: 16px 32px;
+    color: #fff;
+    border-radius: 10px;
+    background-color: #0174BE;
+    border: none;
+    font-weight: 700;
+    box-shadow: inset 0 0 0 2px #fff;
+  }
+  
+  .Heading {
+    background-color: #fff;
+    max-width: fit-content;
+    border-radius: 20px;
+    padding: 16px 32px;
+    font-weight: 700;
+    margin: 20px auto;
+  }

@@ -1,90 +1,72 @@
-
-
-
-
-
-
 import React, { useState, useEffect } from 'react';
+import CanvasJSReact from '@canvasjs/react-charts';
+import './poll.css'
 
-export function Poll({ updatePollData }) {
+const CanvasJSChart = CanvasJSReact.CanvasJSChart;
+
+export function Poll({ updatePollData, dataForm, onVote }) {
+  const [data, setData] = useState([]);
   const [question, setQuestion] = useState('');
-  const [options, setOptions] = useState([]);
-  const [selectedOption, setSelectedOption] = useState('');
-  const [results, setResults] = useState([]);
+  const [optionsData, setOptionsData] = useState([]);
+  const [selectedOption, setSelectedOption] = useState(null);
+  const [voteGiven, setVoteGiven] = useState(null)
 
+  // Directly use the dataForm prop within the component body
   useEffect(() => {
-    // Simulate fetching poll question and options
-    const pollData = {
-      question: 'What is your favorite color?',
-      options: ['Red', 'Blue', 'Green'],
-    };
-    setQuestion(pollData.question);
-    setOptions(pollData.options);
+    if (dataForm) {
+      setQuestion(dataForm.question);
+      setOptionsData(dataForm.options);
+    }
+  }, [dataForm]);
 
-    // Simulate fetching poll results
-    const pollResults = [
-      { _id: '1', text: 'Red', votes: 0 },
-      { _id: '2', text: 'Blue', votes: 0 },
-      { _id: '3', text: 'Green', votes: 0 },
-    ];
-    setResults(pollResults);
-  }, []); // Run once on component mount
+  const handleVote = () => {
+    // Handle the vote for the selected option
+    setVoteGiven(selectedOption);
 
-  const handleOptionChange = (event) => {
-    setSelectedOption(event.target.value);
+    if (onVote) {
+      onVote(selectedOption);
+    }
+
+    // Add your logic to send the vote to the server or update the state as needed
   };
 
-  const handleVoteSubmit = (event) => {
-    event.preventDefault();
-
-    // Simulate sending a vote
-    const newResults = results.map((result) => {
-      if (result.text === selectedOption) {
-        return { ...result, votes: result.votes + 1 };
-      }
-      return result;
-    });
-    setResults(newResults);
-
-    // Call the updatePollData function passed from Dashboard
-    updatePollData(newResults);
+  const options = {
+    animationEnabled: true,
+    title: {
+      text: 'Dynamic Pie Chart',
+    },
+    data: [
+      {
+        type: 'pie',
+        showInLegend: true,
+        legendText: '{label}',
+        dataPoints: data,
+      },
+    ],
   };
-
-  // Apply styles to make text color white
-  const textStyle = { color: 'white' };
 
   return (
     <div id="poll">
-      <h2 style={textStyle}>{question}</h2>
-      <form id="pollForm" onSubmit={handleVoteSubmit}>
-        {options.map((option) => (
-          <div key={option} style={textStyle}>
-            <label>
-              <input
-                type="radio"
-                name="option"
-                value={option}
-                checked={selectedOption === option}
-                onChange={handleOptionChange}
-              />
-              {option}
-            </label>
+      <h3 className='heading'>{question}</h3>
+      <form>
+        {optionsData.map((option, index) => (
+          <div key={index} className="form-group">
+            <input
+              type="radio"
+              id={`option${index}`}
+              name="voteOption"
+              value={option}
+            
+              checked={selectedOption === option}
+              onChange={() => setSelectedOption(option)}
+            />
+            <label htmlFor={`option${index}`} className="vote-label">{option}</label>
           </div>
         ))}
-        <button type="submit" style={{ color: 'black' }}>
+        <button type="button" className='btn btn-primary' onClick={handleVote}>
           Vote
         </button>
       </form>
-      <div id="results" style={textStyle}>
-        <h3>Results:</h3>
-        <ul>
-          {results.map((result) => (
-            <li key={result._id} style={textStyle}>
-              {result.text}: {result.votes}
-            </li>
-          ))}
-        </ul>
-      </div>
     </div>
   );
 }
