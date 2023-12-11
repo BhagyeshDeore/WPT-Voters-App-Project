@@ -43,7 +43,7 @@ app.get("/voter/:phone",async(request,response)=>{
   }
 });
 
-app.get("/voter",verifyToken,async(request,response)=>{
+app.get("/voter",async(request,response)=>{
 
   try {
       const voters=await Voter.find();  

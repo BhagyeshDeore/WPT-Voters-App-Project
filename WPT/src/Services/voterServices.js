@@ -4,7 +4,7 @@ export async function fetchVoters(){
     try {
         const response=await axios.get("http://127.0.0.1:5000/voter");
         return response.data;
-        //console.log(response.data);
+        console.log(response.data);
     } catch (error) {
         console.log(error);
     }
