@@ -1,84 +1,67 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+import CanvasJSReact from '@canvasjs/react-charts';
 
-export function Poll({ updatePollData }) {
-  const [question, setQuestion] = useState('');
-  const [options, setOptions] = useState([]);
-  const [selectedOption, setSelectedOption] = useState('');
-  const [results, setResults] = useState([]);
+const CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
-  useEffect(() => {
-    // Simulate fetching poll question and options
-    const pollData = {
-      question: 'What is your favorite color?',
-      options: ['Red', 'Blue', 'Green'],
-    };
-    setQuestion(pollData.question);
-    setOptions(pollData.options);
+export function Poll({ updatePollData, question, initialOptions }) {
+  const [data, setData] = useState([]);
+  const [inputValue, setInputValue] = useState('');
+  const [labelValue, setLabelValue] = useState('');
 
-    // Simulate fetching poll results
-    const pollResults = [
-      { _id: '1', text: 'Red', votes: 0 },
-      { _id: '2', text: 'Blue', votes: 0 },
-      { _id: '3', text: 'Green', votes: 0 },
-    ];
-    setResults(pollResults);
-  }, []); // Run once on component mount
-
-  const handleOptionChange = (event) => {
-    setSelectedOption(event.target.value);
+  const handleInputChange = (event) => {
+    setInputValue(event.target.value);
   };
 
-  const handleVoteSubmit = (event) => {
-    event.preventDefault();
-
-    // Simulate sending a vote
-    const newResults = results.map((result) => {
-      if (result.text === selectedOption) {
-        return { ...result, votes: result.votes + 1 };
-      }
-      return result;
-    });
-    setResults(newResults);
-
-    // Call the updatePollData function passed from Dashboard
-    updatePollData(newResults);
+  const handleLabelChange = (event) => {
+    setLabelValue(event.target.value);
   };
 
-  // Apply styles to make text color white
-  const textStyle = { color: 'white' };
+  const handleAddData = () => {
+    if (inputValue && labelValue) {
+      const newData = [...data, { label: labelValue, y: parseInt(inputValue, 10) }];
+      setData(newData);
+
+      // Pass the updated data to the parent component (Dashboard)
+      updatePollData(newData);
+
+      setInputValue('');
+      setLabelValue('');
+    }
+  };
+
+  const options = {
+    animationEnabled: true,
+    title: {
+      text: 'Dynamic Pie Chart',
+    },
+    data: [
+      {
+        type: 'pie',
+        showInLegend: true,
+        legendText: '{label}',
+        dataPoints: data,
+      },
+    ],
+  };
 
   return (
     <div id="poll">
-      <h2 style={textStyle}>{question}</h2>
-      <form id="pollForm" onSubmit={handleVoteSubmit}>
-        {options.map((option) => (
-          <div key={option} style={textStyle}>
-            <label>
-              <input
-                type="radio"
-                name="option"
-                value={option}
-                checked={selectedOption === option}
-                onChange={handleOptionChange}
-              />
-              {option}
-            </label>
-          </div>
-        ))}
-        <button type="submit" style={{ color: 'black' }}>
-          Vote
+      {/* ... (existing Poll component logic) */}
+      <form>
+        <label>
+          Label:
+          <input type="text" value={labelValue} onChange={handleLabelChange} />
+        </label>
+        <label>
+          Value:
+          <input type="number" value={inputValue} onChange={handleInputChange} />
+        </label>
+        <button type="button" onClick={handleAddData}>
+          Add Data
         </button>
       </form>
-      <div id="results" style={textStyle}>
-        <h3>Results:</h3>
-        <ul>
-          {results.map((result) => (
-            <li key={result._id} style={textStyle}>
-              {result.text}: {result.votes}
-            </li>
-          ))}
-        </ul>
-      </div>
+      <CanvasJSChart options={options} />
+      {/* ... (existing Poll component logic) */}
     </div>
   );
 }
