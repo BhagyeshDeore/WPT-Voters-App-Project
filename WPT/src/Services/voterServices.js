@@ -40,7 +40,7 @@ export async function updateVoter(updatedData,phone){
 
 export async function fetchVotersbyphone(phone){
     try {
-        const response=await axios.get("http://127.0.0.1:5000/voter/${phone}");
+        const response=await axios.get(`http://127.0.0.1:5000/voter/${phone}`);
         return response.data;
     } catch (error) {
         console.log(error);

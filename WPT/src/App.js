@@ -9,7 +9,7 @@ import LoginForm, { Login } from './components/LoginForm';
 import { VoterEditForm } from './components/voterEditForm';
 
 import {Dashboard} from './components/DashBoard.jsx';
-import {Poll} from './components/Poll.jsx';
+import {Poll} from './components/poll.jsx';
 
 
 

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 import CanvasJSReact from '@canvasjs/react-charts';
 import { Header } from './Header';
-import Poll from './Poll.jsx';
+import Poll from './poll.jsx';
 //import Poll from './components/poll.jsx';
 
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;

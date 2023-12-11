@@ -17,8 +17,8 @@ export function Poll({ updatePollData }) {
 
     // Simulate fetching poll results
     const pollResults = [
-      { _id: '1', text: 'Red', votes: 0 },
-      { _id: '2', text: 'Blue', votes: 0 },
+      { _id: '1', text: 'Blue', votes: 0 },
+      { _id: '2', text: 'Red', votes: 0 },
       { _id: '3', text: 'Green', votes: 0 },
     ];
     setResults(pollResults);

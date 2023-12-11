@@ -4,10 +4,28 @@ import mongoose from 'mongoose';
 import { StatusCodes } from 'http-status-codes';
 import cors from 'cors';
 import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken'
 import {Voter} from './voterschema.js';
 import { Admin } from './AdminModel.js';
 import { Poll } from './pollSchema.js';
 
+function verifyToken(request,response,next){
+   const header=request.get('Authorization');
+   if(header){
+    const token=header.split(" ")[1];
+    jwt.verify(token,"secret1234",(error,payload)=>{
+      if(error)
+      {
+        response.status(StatusCodes.UNAUTHORIZED).send({message:"please login first"})
+      }
+      else{
+        next();
+      }
+    });
+  }else{
+    response.status(StatusCodes.UNAUTHORIZED).send({message:"please login first at header"})
+  }
+}
 const app=express();
 app.use(cors());
 app.use(express.json());
@@ -25,7 +43,8 @@ app.get("/voter/:phone",async(request,response)=>{
   }
 });
 
-app.get("/voter",async(request,response)=>{
+app.get("/voter",verifyToken,async(request,response)=>{
+
   try {
       const voters=await Voter.find();  
       response.send({voters:voters});
@@ -149,59 +168,38 @@ app.post('/polls/vote', async (request, response) => {
 
 // ... (other existing code)
 
-
-app.post("/admin", async (request, response) => {
-  try {
-    const reqData = request.body;
-
-    // Validate that required fields are present
-    if (!reqData.phone || !reqData.password) {
-      response.status(StatusCodes.BAD_REQUEST).send({ message: 'Phone and password are required' });
-      return;
-    }
-
-    // Validate uniqueness of phone number (assuming it should be unique)
-    const existingAdmin = await Admin.findOne({ phone: reqData.phone });
-    if (existingAdmin) {
-      response.status(StatusCodes.CONFLICT).send({ message: 'Phone number is already registered' });
-      return;
-    }
-
-    // Hash the password
-    reqData.password = bcrypt.hashSync(reqData.password, 10);
-
-    const admin = new Admin(reqData);
-    await admin.save();
-    response.status(StatusCodes.CREATED).send({ message: 'Admin registered successfully' });
-  } catch (error) {
-    console.error(error);
-    response.status(StatusCodes.INTERNAL_SERVER_ERROR).send({ message: 'Internal server error' });
+app.post("/admin",async(request,response)=>{
+  try{
+    const reqData=request.body;
+    reqData['password']= bcrypt.hashSync(reqData.password,10)
+  const admin=new Admin(reqData);
+   await admin.save();
+   response.send({message:INSERT_SUCCESS});
+  }catch(error){
+    response.status(StatusCodes.INTERNAL_SERVER_ERROR).send({message:ERROR_MESSAGE});
   }
-});
-
-app.post("/admin/login", async (request, response) => {
+})
+app.post("/admin/login",async(request,response)=>{
   try {
-    const { phone, password } = request.body;
-
-    // Validate that required fields are present
-    if (!phone || !password) {
-      response.status(StatusCodes.BAD_REQUEST).send({ message: 'Phone and password are required' });
-      return;
+    const admin = await Admin.findOne({phone:request.body.phone});
+    if(admin){
+    if(bcrypt.compareSync(request.body.password,admin.password)){
+      const token= jwt.sign({adminPhone:admin.phone},"secret1234");
+      response.status(StatusCodes.OK).send({message:"Login Succesful",token:token});
     }
-
-    // Find the admin by phone number
-    const admin = await Admin.findOne({ phone });
-
-    if (admin && bcrypt.compareSync(password, admin.password)) {
-      response.status(StatusCodes.OK).send({ message: "Login successful" });
-    } else {
-      response.status(StatusCodes.UNAUTHORIZED).send({ message: "Invalid phone number or password" });
-    }
-  } catch (error) {
-    console.error(error);
-    response.status(StatusCodes.INTERNAL_SERVER_ERROR).send({ message: 'Internal server error' });
+    else{
+      response.status(StatusCodes.INTERNAL_SERVER_ERROR).send({message:"Invalid password"});
+    } 
   }
-});
+  else{
+    response.status(StatusCodes.INTERNAL_SERVER_ERROR).send({message:"Invalid password"});
+  }
+  } catch (error) {
+    response.status(StatusCodes.INTERNAL_SERVER_ERROR).send({message:ERROR_MESSAGE});
+  }
+})
+
+ 
 
 app.post("/voter",async(request,response)=>{
   try{

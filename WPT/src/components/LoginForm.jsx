@@ -1,8 +1,11 @@
 import React, { useState } from "react";
 import { fetchVotersbyphone } from '../Services/voterServices';
-
+import {login} from "../Services/AdminService";
+import {useNavigate} from "react-router-dom";
 
 function LoginForm() {
+  const navigate=useNavigate();
+  //const[loginError,setLoginError]=useState(false)
   const [formData, setFormData] = useState({
     phone: "",
     password: "",
@@ -76,27 +79,32 @@ function LoginForm() {
     if (validateForm()) {
       try {
         // Make API request to authenticate user
-        const response = await fetch("http://localhost:5000/admin/login", {
+        /*const response = await fetch("http://localhost:5000/admin/login", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify(formData),
-        });
+        });*/
+        const result= await login(formData);
+        console.log(result);
+        localStorage.setItem("token",result.token);
+        navigate("/Voterlist");
 
-        const data = await response.json();
+        //const data = await response.json();
 
-        if (response.ok) {
+        /*if (response.ok) {
           // Successful login
           console.log("Login successful!");
           setSubmitted(true);
         } else {
           // Login failed, display error message
           setErrors({ login: data.message });
-        }
+        }*/
       } catch (error) {
         console.error("Error submitting login:", error);
-        setErrors({ login: "An error occurred while logging in" });
+        //setErrors({ login: "An error occurred while logging in" });
+        //setLoginError(true);
       }
     }
   };
@@ -141,6 +149,7 @@ function LoginForm() {
                 Login
               </button>
             </form>
+           
           )}
 
           <a
