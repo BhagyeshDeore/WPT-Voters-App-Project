@@ -25,32 +25,26 @@ export function Dashboard() {
       {
         type: 'doughnut',
         showInLegend: true,
-        indexLabel: '{name}: {y}',
+        indexLabel: '{label}: {y}',
         yValueFormatString: "#,###'%'",
-        dataPoints: [
-        //   { name: 'Unsatisfied', y: 5 },
-        //   { name: 'Very Unsatisfied', y: 31 },
-        //   { name: 'Very Satisfied', y: 40 },
-        //   { name: 'Satisfied', y: 17 },
-        //   { name: 'Neutral', y: 7 },
-        ],
+        dataPoints: [],
       },
     ],
   });
 
   const updatePollData = (newData) => {
     const newDataPoints = newData.map((result) => ({
-        name: result.text,
-        y: result.votes,
-      }));
-    
-;    setPollOptions((prevOptions) => ({
+      label: result.name,
+      y: result.votes,
+    }));
+
+    setPollOptions((prevOptions) => ({
       ...prevOptions,
       data: [
         {
           type: 'doughnut',
           showInLegend: true,
-          indexLabel: '{name}: {y}',
+          indexLabel: '{label}: {y}',
           yValueFormatString: "#,###'%'",
           dataPoints: newDataPoints,
         },
@@ -62,10 +56,6 @@ export function Dashboard() {
     <>
       <Container>
         <Header text="Welcome to PollPulse"></Header>
-        {/* <p>
-          Using this app you can add student, remove student, search a specific
-          student and update student
-        </p> */}
       </Container>
 
       <Container>

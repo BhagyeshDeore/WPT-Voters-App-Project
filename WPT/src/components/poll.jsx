@@ -1,4 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+import CanvasJSReact from '@canvasjs/react-charts';
+
+const CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
 export function Poll({ updatePollData }) {
   const [question, setQuestion] = useState('');
@@ -17,8 +20,8 @@ export function Poll({ updatePollData }) {
 
     // Simulate fetching poll results
     const pollResults = [
-      { _id: '1', text: 'Blue', votes: 0 },
-      { _id: '2', text: 'Red', votes: 0 },
+      { _id: '1', text: 'Red', votes: 0 },
+      { _id: '2', text: 'Blue', votes: 0 },
       { _id: '3', text: 'Green', votes: 0 },
     ];
     setResults(pollResults);
@@ -28,57 +31,39 @@ export function Poll({ updatePollData }) {
     setSelectedOption(event.target.value);
   };
 
-  const handleVoteSubmit = (event) => {
-    event.preventDefault();
-
-    // Simulate sending a vote
-    const newResults = results.map((result) => {
-      if (result.text === selectedOption) {
-        return { ...result, votes: result.votes + 1 };
-      }
-      return result;
-    });
-    setResults(newResults);
-
-    // Call the updatePollData function passed from Dashboard
-    updatePollData(newResults);
+  const options = {
+    animationEnabled: true,
+    title: {
+      text: 'Dynamic Pie Chart',
+    },
+    data: [
+      {
+        type: 'pie',
+        showInLegend: true,
+        legendText: '{label}',
+        dataPoints: data,
+      },
+    ],
   };
-
-  // Apply styles to make text color white
-  const textStyle = { color: 'white' };
 
   return (
     <div id="poll">
-      <h2 style={textStyle}>{question}</h2>
-      <form id="pollForm" onSubmit={handleVoteSubmit}>
-        {options.map((option) => (
-          <div key={option} style={textStyle}>
-            <label>
-              <input
-                type="radio"
-                name="option"
-                value={option}
-                checked={selectedOption === option}
-                onChange={handleOptionChange}
-              />
-              {option}
-            </label>
-          </div>
-        ))}
-        <button type="submit" style={{ color: 'black' }}>
-          Vote
+      {/* ... (existing Poll component logic) */}
+      <form>
+        <label>
+          Label:
+          <input type="text" value={labelValue} onChange={handleLabelChange} />
+        </label>
+        <label>
+          Value:
+          <input type="number" value={inputValue} onChange={handleInputChange} />
+        </label>
+        <button type="button" onClick={handleAddData}>
+          Add Data
         </button>
       </form>
-      <div id="results" style={textStyle}>
-        <h3>Results:</h3>
-        <ul>
-          {results.map((result) => (
-            <li key={result._id} style={textStyle}>
-              {result.text}: {result.votes}
-            </li>
-          ))}
-        </ul>
-      </div>
+      <CanvasJSChart options={options} />
+      {/* ... (existing Poll component logic) */}
     </div>
   );
 }
