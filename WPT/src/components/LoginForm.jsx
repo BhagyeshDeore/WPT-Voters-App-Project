@@ -89,7 +89,7 @@ function LoginForm() {
         const result= await login(formData);
         console.log(result);
         localStorage.setItem("token",result.token);
-        navigate("/Voterlist");
+        navigate("/dashboard");
 
         //const data = await response.json();
 
